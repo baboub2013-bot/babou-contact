@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>Contact | Babou's Hub</title>
+  <style>
+    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f4f5f8;background:#101116}
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;min-height:100svh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at top,#1a1c29 0%,#101116 58%)}
+    main{width:min(100%,480px)}
+    .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#a4a8c0;font-weight:700;margin:0 0 12px}
+    h1{font-size:clamp(30px,6vw,39px);letter-spacing:-.04em;margin:0 0 12px;line-height:1.12}
+    .intro{color:#aaafbf;font-size:15px;line-height:1.7;margin:0 0 30px}
+    .panel{border:1px solid #323541;border-radius:15px;background:#1b1d26;padding:25px;box-shadow:0 16px 45px rgba(0,0,0,.18)}
+    label{font-weight:650;font-size:13px;color:#e5e6ee;display:block;margin:0 0 10px}
+    select{width:100%;border:1px solid #414558;border-radius:9px;background:#252734;color:#f8f8fa;min-height:49px;padding:0 14px;font:inherit;font-size:14px;outline-offset:3px}
+    select:focus{border-color:#7582fc;outline:2px solid #7582fc55}
+    .detail{font-size:13px;color:#999fb1;margin:16px 0 25px;min-height:22px;line-height:1.6}
+    .detail strong{color:#e6e7ef;font-weight:550}
+    button{width:100%;min-height:48px;border:0;border-radius:9px;background:#5865f2;color:#fff;font:inherit;font-size:14px;font-weight:750;cursor:pointer;transition:background .14s}
+    button:hover:not(:disabled){background:#6875ff}
+    button:disabled{background:#414452;color:#b6b7c2;cursor:not-allowed}
+    .email{margin-top:18px;color:#9499aa;font-size:13px;line-height:1.6}
+    .email a{color:#ced3ff;text-decoration:none;overflow-wrap:anywhere}
+    .email a:hover{text-decoration:underline}
+    footer{color:#767c8d;text-align:center;font-size:12px;margin-top:26px;line-height:1.6}
+    @media(max-width:380px){.panel{padding:19px}}
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">Babou's Hub</p>
+  <h1>Get in touch.</h1>
+  <p class="intro">For business inquiries, collaborations, and other requests, select a contact reason below. Your email will open with the subject already filled in.</p>
+  <section class="panel" aria-label="Contact form">
+    <form id="contactForm">
+      <label for="reason">What would you like to discuss?</label>
+      <select id="reason" required>
+        <option value="" selected disabled>Select a subject...</option>
+        <option value="Business Inquiry">Business inquiry</option>
+        <option value="Collaboration Proposal">Collaboration proposal</option>
+        <option value="Sponsorship or Partnership">Sponsorship or partnership</option>
+        <option value="Copyright or Content Request">Copyright or content request</option>
+        <option value="Community Support">Community support</option>
+        <option value="General Inquiry">Other inquiry</option>
+      </select>
+      <p class="detail" aria-live="polite" id="subjectPreview">The subject will be filled in automatically.</p>
+      <button type="submit" id="openGmail" disabled>Continue to Gmail</button>
+    </form>
+    <p class="email">Prefer another email app? Write to <a id="emailAddress" href="mailto:babou223.pro@gmail.com">babou223.pro@gmail.com</a>.</p>
+  </section>
+  <footer>Babou's Hub · Official Contact<br />This page does not collect, store, or send your message.</footer>
+</main>
+<script>
+  const form = document.getElementById('contactForm');
+  const select = document.getElementById('reason');
+  const preview = document.getElementById('subjectPreview');
+  const button = document.getElementById('openGmail');
+  const email = 'babou223.pro@gmail.com';
+  select.addEventListener('change', () => {
+    button.disabled = !select.value;
+    preview.textContent = select.value ? 'Subject: ' + select.value : 'The subject will be filled in automatically.';
+    const mailTo = 'mailto:' + email + (select.value ? '?subject=' + encodeURIComponent(select.value) : '');
+    document.getElementById('emailAddress').href = mailTo;
+  });
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!select.value) return;
+    const url = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(email) + '&su=' + encodeURIComponent(select.value);
+    window.location.href = url;
+  });
+</script>
+</body>
+</html>
